@@ -2,11 +2,9 @@ import { rem } from '@/theme/utils';
 import { createGlobalStyle } from 'styled-components/macro';
 
 const GlobalStyle = createGlobalStyle`
-body {
-  background-color : var(--black);
+  body {
   button,
   a {cursor: pointer};
-  color: var(--white);
   }
   body,
   body::before,
