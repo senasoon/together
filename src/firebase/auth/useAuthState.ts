@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from './index';
 import { useRecoilState } from 'recoil';
@@ -6,16 +6,19 @@ import { authStateAtom } from '@/store/authState';
 
 export function useAuthState() {
   const [authState, setAuthState] = useRecoilState(authStateAtom);
+  const [init, setInit] = useState(false);
 
   useEffect(() => {
     setAuthState({ isLoading: true, user: null, error: null });
-    return onAuthStateChanged(
+    onAuthStateChanged(
       auth,
       (currentUser) => {
         setAuthState({ isLoading: false, user: currentUser, error: null });
+        setInit(true);
       },
       (error) => {
         setAuthState({ user: null, isLoading: false, error: error });
+        setInit(true);
       }
     );
   }, []);
@@ -23,7 +26,8 @@ export function useAuthState() {
   return useMemo(
     () => ({
       authState,
+      init,
     }),
-    [authState]
+    [authState, init]
   );
 }

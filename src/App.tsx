@@ -17,7 +17,7 @@ import UnauthenticatedRoute from './UnauthenticatedRoute';
 import LoadingSpinner from './components/loading/LoadingSpinner';
 
 const App = () => {
-  const { authState } = useAuthState();
+  const { authState, init } = useAuthState();
   const isAuthenticated = !!authState.user;
 
   if (authState.isLoading) {
@@ -33,31 +33,37 @@ const App = () => {
       <BrowserRouter>
         <ResetCss />
         <GlobalStyle />
-        <Routes>
-          <Route
-            element={<AuthenticatedRoute isAuthenticated={isAuthenticated} />}
-          >
-            <Route element={<Layout />}>
-              <Route path="/profile-page" element={<ProfilePage />} />
-              <Route path="/profile-edit" element={<ProfileEdit />} />
-              <Route path="/profile-create" element={<ProfileCreate />} />
-              <Route path="/main" element={<MainPage />} />
-              <Route path="/search" element={<SearchPage />} />
+        {init ? (
+          <Routes>
+            <Route
+              element={<AuthenticatedRoute isAuthenticated={isAuthenticated} />}
+            >
+              <Route element={<Layout />}>
+                <Route path="/profile-page" element={<ProfilePage />} />
+                <Route path="/profile-edit" element={<ProfileEdit />} />
+                <Route path="/profile-create" element={<ProfileCreate />} />
+                <Route path="/main" element={<MainPage />} />
+                <Route path="/search" element={<SearchPage />} />
+              </Route>
             </Route>
-          </Route>
-          <Route
-            element={<UnauthenticatedRoute isAuthenticated={isAuthenticated} />}
-          >
-            <Route element={<Layout />}>
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/register" element={<RegisterPage />} />
-              <Route path="/login" element={<LoginPage />} />
+            <Route
+              element={
+                <UnauthenticatedRoute isAuthenticated={isAuthenticated} />
+              }
+            >
+              <Route element={<Layout />}>
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+                <Route path="/login" element={<LoginPage />} />
+              </Route>
             </Route>
-          </Route>
-          <Route element={<Layout />}>
-            <Route path="*" element={<NotFound />} />
-          </Route>
-        </Routes>
+            <Route element={<Layout />}>
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
+        ) : (
+          <></>
+        )}
       </BrowserRouter>
     </>
   );
