@@ -54,9 +54,7 @@ const GlobalStyle = createGlobalStyle`
 
     font-size: calc(8px + 0.5vw);
 
-    * {
-      transition: 0.1ms;
-    } 
+
   }
 `;
 
